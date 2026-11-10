@@ -9,7 +9,12 @@ function newGame(pairs) {
     state.cards.push({ face: face, flipped: false, matched: false });
   }
 
-  // TODO R1: Shuffle state.cards so the pairs aren't next to each other.
+  for (let i = state.cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const card = state.cards[i];
+    state.cards[i] = state.cards[j];
+    state.cards[j] = card;
+  }
 
   state.firstPick = null;
   state.secondPick = null;

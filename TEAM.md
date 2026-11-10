@@ -1,5 +1,9 @@
 # Our Team
 
-Team name:
+Team name: Nate and Friends
+
 
 Members:
+Sophia 
+Nate
+Maddy

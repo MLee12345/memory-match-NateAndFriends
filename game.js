@@ -9,6 +9,7 @@ function newGame(pairs) {
     state.cards.push({ face: face, flipped: false, matched: false });
   }
 
+  // Shuffle the cards so each new game starts in a random order.
   for (let i = state.cards.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const card = state.cards[i];

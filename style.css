@@ -3,6 +3,25 @@
 body {
   font-family: system-ui, sans-serif;
   margin: 24px;
+  background: #f7f1e8;
+  color: #27231f;
+}
+
+#status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.status-item {
+  border: 2px solid #5f4738;
+  border-radius: 8px;
+  background: #fff8ec;
+  box-shadow: 0 2px 0 #d7b98d;
+  color: #3d2d24;
+  font-weight: 700;
+  padding: 8px 12px;
 }
 
 /* TODO T1: Lay the cards out in a neat grid (4 across works for 16 cards),
@@ -10,11 +29,64 @@ body {
 
 #table {
   --card-columns: 4;
+  position: relative;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(var(--card-columns), minmax(64px, 88px));
   gap: 10px;
   width: max-content;
   max-width: 100%;
+  border: 4px solid #6b4b36;
+  border-radius: 8px;
+  padding: 54px 16px 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(#f9d98f 0 34px, transparent 34px),
+    linear-gradient(90deg, #fef7e6 0 50%, #f3ead8 50% 100%);
+  box-shadow: 0 6px 0 #c79d65;
+}
+
+#table::before {
+  position: absolute;
+  top: 0;
+  left: -32px;
+  right: -32px;
+  height: 34px;
+  content: "";
+  background: repeating-linear-gradient(
+    90deg,
+    #d95842 0 24px,
+    #d95842 24px 48px,
+    #fff3df 48px 72px,
+    #fff3df 72px 96px
+  );
+  animation: awning-slide 10s linear infinite;
+}
+
+#table::after {
+  position: absolute;
+  top: 38px;
+  left: 16px;
+  right: 16px;
+  height: 16px;
+  content: "Paws & Pairs";
+  color: #5f4738;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 16px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@keyframes awning-slide {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(96px);
+  }
 }
 
 .card {

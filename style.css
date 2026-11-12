@@ -5,6 +5,19 @@ body {
   margin: 24px;
 }
 
+#status {
+  font-weight: 700;
+}
+
+#message {
+  min-height: 1.5rem;
+  font-weight: 700;
+}
+
+#message.show {
+  color: forestgreen;
+}
+
 /* TODO T1: Lay the cards out in a neat grid (4 across works for 16 cards),
    and give them a look that fits your team's theme. */
 

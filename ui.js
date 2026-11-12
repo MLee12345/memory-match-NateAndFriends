@@ -3,6 +3,31 @@
 
 const tableEl = document.getElementById("table");
 const statusEl = document.getElementById("status");
+const messageEl = document.getElementById("message");
+const MOVES_PER_PAIR = 3;
+let messageTimer = null;
+
+function getMoveLimit() {
+  return PAIRS * MOVES_PER_PAIR;
+}
+
+function getMovesLeft() {
+  return Math.max(getMoveLimit() - state.moves, 0);
+}
+
+function showMessage(text) {
+  messageEl.textContent = text;
+  messageEl.className = "show";
+
+  if (messageTimer !== null) {
+    clearTimeout(messageTimer);
+  }
+
+  messageTimer = setTimeout(function () {
+    messageEl.textContent = "";
+    messageEl.className = "";
+  }, 1200);
+}
 
 function render() {
   tableEl.innerHTML = "";
@@ -22,7 +47,8 @@ function render() {
   });
 
   // TODO T2: Show the number of moves and matches in statusEl.
-  statusEl.textContent = "";
+  statusEl.textContent =
+    "Moves left: " + getMovesLeft() + " | Matches: " + state.matches + " of " + PAIRS;
 
   // TODO T3: When isWon() is true, show a win message with the move count.
 }
@@ -30,6 +56,9 @@ function render() {
 function handleClick(index) {
   const result = pickCard(index);
   render();
+  if (result === "match") {
+    showMessage("Wild match! Nice animal instincts!");
+  }
   if (result === "miss") {
     setTimeout(function () {
       hideMiss();

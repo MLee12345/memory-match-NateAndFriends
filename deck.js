@@ -25,7 +25,10 @@ function getFaces(pairs) {
     "🐔",
     "🦋",
     "🐞",
+<<<<<<< Updated upstream
     "🦗",
+=======
+>>>>>>> Stashed changes
   ];
 
   return faces.slice(0, pairs);

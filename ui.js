@@ -4,6 +4,7 @@
 const tableEl = document.getElementById("table");
 const statusEl = document.getElementById("status");
 const CARD_LEVELS = [16, 28, 36, 40];
+const MOVES_PER_PAIR = 3;
 let currentLevel = 0;
 
 function getLevelPairs() {
@@ -35,6 +36,26 @@ function getGridColumns(cardCount) {
   return 8;
 }
 
+function getMovesLeft() {
+  const moveLimit = getLevelPairs() * MOVES_PER_PAIR;
+  return Math.max(moveLimit - state.moves, 0);
+}
+
+function renderStatus() {
+  statusEl.innerHTML =
+    '<span class="status-item">Pet shop level ' +
+    (currentLevel + 1) +
+    "</span>" +
+    '<span class="status-item">Moves left: ' +
+    getMovesLeft() +
+    "</span>" +
+    '<span class="status-item">Matches: ' +
+    state.matches +
+    " / " +
+    getLevelPairs() +
+    "</span>";
+}
+
 function render() {
   tableEl.innerHTML = "";
   tableEl.dataset.level = currentLevel + 1;
@@ -56,7 +77,7 @@ function render() {
   });
 
   // TODO T2: Show the number of moves and matches in statusEl.
-  statusEl.textContent = "";
+  renderStatus();
 
   // TODO T3: When isWon() is true, show a win message with the move count.
 }

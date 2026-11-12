@@ -3,34 +3,64 @@
 
 const tableEl = document.getElementById("table");
 const statusEl = document.getElementById("status");
-const messageEl = document.getElementById("message");
+const CARD_LEVELS = [16, 28, 36, 40];
 const MOVES_PER_PAIR = 3;
-let messageTimer = null;
+let currentLevel = 0;
 
-function getMoveLimit() {
-  return PAIRS * MOVES_PER_PAIR;
+function getLevelPairs() {
+  return CARD_LEVELS[currentLevel] / 2;
+}
+
+function startCurrentLevel() {
+  newGame(getLevelPairs());
+  render();
+}
+
+function startNextLevel() {
+  if (currentLevel < CARD_LEVELS.length - 1) {
+    currentLevel += 1;
+    startCurrentLevel();
+  }
+}
+
+function getGridColumns(cardCount) {
+  if (cardCount <= 16) {
+    return 4;
+  }
+  if (cardCount <= 28) {
+    return 7;
+  }
+  if (cardCount <= 36) {
+    return 6;
+  }
+  return 8;
 }
 
 function getMovesLeft() {
-  return Math.max(getMoveLimit() - state.moves, 0);
+  const moveLimit = getLevelPairs() * MOVES_PER_PAIR;
+  return Math.max(moveLimit - state.moves, 0);
 }
 
-function showMessage(text) {
-  messageEl.textContent = text;
-  messageEl.className = "show";
-
-  if (messageTimer !== null) {
-    clearTimeout(messageTimer);
-  }
-
-  messageTimer = setTimeout(function () {
-    messageEl.textContent = "";
-    messageEl.className = "";
-  }, 1200);
+function renderStatus() {
+  statusEl.innerHTML =
+    '<span class="status-item">Pet shop level ' +
+    (currentLevel + 1) +
+    "</span>" +
+    '<span class="status-item">Moves left: ' +
+    getMovesLeft() +
+    "</span>" +
+    '<span class="status-item">Matches: ' +
+    state.matches +
+    " / " +
+    getLevelPairs() +
+    "</span>";
 }
 
 function render() {
   tableEl.innerHTML = "";
+  tableEl.dataset.level = currentLevel + 1;
+  tableEl.dataset.cards = state.cards.length;
+  tableEl.style.setProperty("--card-columns", getGridColumns(state.cards.length));
 
   state.cards.forEach(function (card, index) {
     const button = document.createElement("button");
@@ -47,8 +77,7 @@ function render() {
   });
 
   // TODO T2: Show the number of moves and matches in statusEl.
-  statusEl.textContent =
-    "Moves left: " + getMovesLeft() + " | Matches: " + state.matches + " of " + PAIRS;
+  renderStatus();
 
   // TODO T3: When isWon() is true, show a win message with the move count.
 }
@@ -56,8 +85,8 @@ function render() {
 function handleClick(index) {
   const result = pickCard(index);
   render();
-  if (result === "match") {
-    showMessage("Wild match! Nice animal instincts!");
+  if (result === "match" && isWon()) {
+    setTimeout(startNextLevel, 800);
   }
   if (result === "miss") {
     setTimeout(function () {
@@ -70,5 +99,4 @@ function handleClick(index) {
 // TODO T3: Add a "New game" button to index.html. When it's clicked,
 // call newGame(PAIRS) and then render().
 
-newGame(PAIRS);
-render();
+startCurrentLevel();
